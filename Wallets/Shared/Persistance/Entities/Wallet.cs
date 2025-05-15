@@ -5,16 +5,36 @@ public class Wallet
     public int Id { get; set; }
     public Guid ProfileId { get; set; }
     public string Title { get; set; }
-    public ICollection<Currency> Currencies { get; set; }
+    public WalletStatus Status { get; set; }
+    public Currency Currency { get; set; }
+    public string CurrencyCode { get; set; }
 
-    public Wallet(Guid profileId, string title, Currency[] currencies)
+    public Wallet(Guid profileId, string title, string currencycode)
     {
         ProfileId = profileId;
         Title = title;
-        Currencies = currencies;
+        Status = WalletStatus.Active;
+        CurrencyCode = currencycode;
     }
-}
 
+    public void Active() =>
+        Status = WalletStatus.Active;
+
+    public void Ban() =>
+        Status = WalletStatus.Banned;
+
+    public void Suspend() =>
+        Status = WalletStatus.Suspend;
+
+ }
+
+public enum WalletStatus
+{
+    Active,
+    Inactive,
+    Suspend,
+    Banned
+}
 
 public class WalletConfiguration : IEntityTypeConfiguration<Wallet>
 {
@@ -28,11 +48,6 @@ public class WalletConfiguration : IEntityTypeConfiguration<Wallet>
         builder.Property(x => x.Title)
             .HasMaxLength(100)
             .IsRequired();
-
-        //builder.HasMany<>(x => x.Raito)
-        //    .HasPrecision(18, 4)
-        //    .IsRequired();
-
-    }
+            }
 
 }

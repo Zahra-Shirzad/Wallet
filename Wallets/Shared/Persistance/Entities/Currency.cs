@@ -7,6 +7,7 @@ public class Currency
     public string Name { get; set; }
     public decimal Raito { get; set; }
     public DateTime ModifiedAtUtc { get; set; }
+    public ICollection<Wallet> Wallets { get; set; }
 
     public Currency(string code, string name, decimal raito)
     {
@@ -44,8 +45,9 @@ public class CurrencyConfiguration : IEntityTypeConfiguration<Currency>
             .IsRequired();
 
         builder.Property(x => x.Raito)
-            .HasPrecision(18, 4)
+            .HasPrecision(10, 9)
             .IsRequired();
+
 
     }
 

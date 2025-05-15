@@ -5,4 +5,6 @@ global using Wallets.Shared.Persistance;
 global using Wallets.Controllers.Currencies.Dtos;
 global using Scalar.AspNetCore;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
+global using MassTransit;
+global using Wallets.Services;
 

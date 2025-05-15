@@ -6,16 +6,18 @@ namespace Wallets.Controllers.Currencies;
 public class CurrenciesController : ControllerBase
 {
     private readonly WalletDbContext _dbContext;
-    public CurrenciesController(WalletDbContext dbContext)
+    private readonly WalletService _walletService;
+    public CurrenciesController(WalletDbContext dbContext, WalletService walletService)
     {
         _dbContext = dbContext;
+        _walletService = walletService;
     }
 
     //create
     [HttpPost(Name = "")]
     public async Task<IActionResult> Create(CreateCurrencyRequest request)
     {
-        var currency = new Wallets.Shared.Persistance.Entities.Currency(request.Code, request.Name, request.Raito);
+        var currency = new Currency(request.Code, request.Name, request.Raito);
         _dbContext.Add(currency);
 
         return ((await _dbContext.SaveChangesAsync()) > 0)
@@ -63,7 +65,7 @@ public class CurrenciesController : ControllerBase
     }
 
     //get/{code}
-    [HttpGet("/{code}")]
+    [HttpGet("{code}")]
     public async Task<IActionResult> Get([FromRoute] string code)
     {
         var currency = await _dbContext.currencies
@@ -75,5 +77,13 @@ public class CurrenciesController : ControllerBase
             false => BadRequest(currency)
         };
     }
+
+
+    [HttpGet("{code}")]
+    public async Task<IActionResult> GetWalletBalance([FromRoute(Name = "wallet-id")] string walletId)
+    {
+        return null;
+    }
+
 
 }
